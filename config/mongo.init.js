@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const userModel = require('../models/user.model');
-const exerciseModel = require('../models/exercise.model');
-const scheduleModel = require("../models/schedule.model");
+const ownerModel = require('../models/owner.model');
+const petModel = require('../models/pet.model');
 const dotenv = require('dotenv')
 dotenv.config()
 const db = {};
@@ -11,9 +10,7 @@ const connectDatabase = async() => {
 }
 
 connectDatabase().then(connection => {
-    db.user = userModel.UserSchema(connection)
-    db.exercise = exerciseModel.ExerciseSchema(connection)
-    db.schedule = scheduleModel.ScheduleSchema(connection)
+    db.user = ownerModel.OwnerSchema(connection)
 })
 
 module.exports = db;
