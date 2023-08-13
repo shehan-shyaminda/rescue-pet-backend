@@ -1,0 +1,69 @@
+const ownerModel = require("../models/owner.model");
+const jwt = require("jsonwebtoken");
+const db = require("../config/mongo.init");
+const makeRequired = (x) => x.required();
+
+exports.checkLogin = (req, res, next) => {
+    const { error } = ownerModel.joiOwner.fork(['username','password'], makeRequired).validate({
+        username: req.body.username,
+        password: req.body.password
+    });
+    if (error) return res.status(400).send({status: false, message: error.details[0].message});
+    return next();
+}
+
+exports.checkOwner = (req, res, next) => {
+    const { error } = ownerModel.joiOwner.fork(['username'], makeRequired).validate({
+        username: req.body.username
+    });
+    if (error) return res.status(400).send({status: false, message: error.details[0].message});
+    return next();
+}
+
+exports.saveNewOwner = (req, res, next) => {
+    const { error } = ownerModel.joiOwner.fork(['username','password'], makeRequired).validate({
+        username: req.body.username,
+        password: req.body.password
+    });
+    if (error) return res.status(400).send({status: false, message: error.details[0].message});
+    return next();
+}
+
+exports.updateOwnerLocation = (req, res, next) => {
+    const { error } = ownerModel.joiOwner.fork(['ownerId'], makeRequired).validate({
+        ownerId: req.body.ownerId,
+    });
+    if (error) return res.status(400).send({status: false, message: error.details[0].message});
+    return next();
+}
+
+exports.checkValidJWT = (req, res, next) => {
+    if (req.headers['authorization']) {
+        try {
+            let authorization = req.headers['authorization'].split(' ');
+            if (authorization[0] !== 'Bearer') {
+                return res.status(401).send({status : false, data: "Unauthorized"});
+            } else {
+                req.jwt = jwt.verify(authorization[1], process.env.JWT_SECRET);
+                return next();
+            }
+
+        } catch (err) {
+            return res.status(401).send({status : false, message: "Unauthorized"});
+        }
+    } else {
+        return res.status(401).send({status : false, message: "Unauthorized"});
+    }
+};
+
+exports.checkExistingUser = (req, res, next) => {
+    db.user.find({username: req.body.username}).exec().then(r => {
+        if (r.length !== 0) {
+            console.log(`existing user found`);
+            return res.status(400).send({status: false, message: "An account is already registered with your username"})
+        } else {
+            console.log(`existing user not found`);
+            return next()
+        }
+    })
+}
