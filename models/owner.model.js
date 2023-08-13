@@ -6,11 +6,11 @@ exports.OwnerSchema = function (mongoose) {
         username: String,
         password: String,
         pets: Array,
-        userLongitude: String,
+        userLongitude: Number,
         userLatitude: Number
     });
 
-    return  mongoose.model(process.env.MONGOOSE_USERS_COLLECTION, mongooseOwner);
+    return  mongoose.model(process.env.MONGOOSE_OWNERS_COLLECTION, mongooseOwner);
 }
 
 exports.joiOwner = Joi.object({

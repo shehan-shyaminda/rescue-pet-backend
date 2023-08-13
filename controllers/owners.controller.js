@@ -1,6 +1,7 @@
 const db = require("../config/mongo.init");
 const {v4: uuidv4} = require('uuid');
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 exports.checkLogin = (req, res) => {
     const jwtToken = jwt.sign(req.body, process.env.JWT_SECRET)
@@ -40,19 +41,37 @@ exports.saveNewUser = (req, res) => {
 }
 
 exports.saveNewPet = (req, res) => {
-    const user = new db.user({
-        petId: uuidv4(),
+    const petId = crypto.randomBytes(4).toString("hex");
+    const pet = {
+        petId: petId,
+        userId: req.body.userId,
+        petDeviceId: "pet_" + petId,
         petNickname: req.body.petNickname,
-    });
-    user.save().then(r => {
-        if (r.length !== 0) {
-            console.log(`new user registered ${r}`);
-            res.status(200).send({status: true, data: user})
-        } else {
-            console.log(`registration error`);
-            res.status(400).send({status: false, message: 'Registration Error'});
+    };
+
+    db.user.findOneAndUpdate({userId: req.body.userId}, {
+        $push: {
+            pets: pet
         }
-    });
+    }, {new: true}).then(r => {
+        if (r != null) {
+            console.log(`new pet registered ${r}`);
+            res.status(200).send({status: true, data: pet})
+        } else {
+            res.status(400).send({status: false, message: 'Update Error'});
+        }
+    })
+}
+
+exports.getMyPet = (req, res) => {
+    db.user.findOne({userId: req.body.userId}, {pets: {$elemMatch: {petId: req.body.petId}}}).exec().then(r => {
+        if (r) {
+            res.status(200).send({status: true, data: r})
+        } else {
+            console.log(`no user found`);
+            res.status(401).send({status: false, message: 'Please Check Your Credentials'})
+        }
+    })
 }
 
 exports.updateSelfLocation = (req, res) => {

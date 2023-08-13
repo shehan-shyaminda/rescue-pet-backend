@@ -1,10 +1,11 @@
 const ownerModel = require("../models/owner.model");
+const petModel = require("../models/pet.model");
 const jwt = require("jsonwebtoken");
 const db = require("../config/mongo.init");
 const makeRequired = (x) => x.required();
 
-exports.checkLogin = (req, res, next) => {
-    const { error } = ownerModel.joiOwner.fork(['username','password'], makeRequired).validate({
+exports.validateLogin = (req, res, next) => {
+    const {error} = ownerModel.joiOwner.fork(['username', 'password'], makeRequired).validate({
         username: req.body.username,
         password: req.body.password
     });
@@ -12,16 +13,8 @@ exports.checkLogin = (req, res, next) => {
     return next();
 }
 
-exports.checkOwner = (req, res, next) => {
-    const { error } = ownerModel.joiOwner.fork(['username'], makeRequired).validate({
-        username: req.body.username
-    });
-    if (error) return res.status(400).send({status: false, message: error.details[0].message});
-    return next();
-}
-
-exports.saveNewOwner = (req, res, next) => {
-    const { error } = ownerModel.joiOwner.fork(['username','password'], makeRequired).validate({
+exports.validateNewUser = (req, res, next) => {
+    const {error} = ownerModel.joiOwner.fork(['username', 'password'], makeRequired).validate({
         username: req.body.username,
         password: req.body.password
     });
@@ -29,9 +22,35 @@ exports.saveNewOwner = (req, res, next) => {
     return next();
 }
 
-exports.updateOwnerLocation = (req, res, next) => {
-    const { error } = ownerModel.joiOwner.fork(['ownerId'], makeRequired).validate({
-        ownerId: req.body.ownerId,
+exports.validateAddPet = (req, res, next) => {
+    const {error: ownerModelError} = ownerModel.joiOwner.fork(['userId'], makeRequired).validate({
+        userId: req.body.userId
+    });
+    const {error: petModelError} = petModel.joiPet.fork(['petNickname'], makeRequired).validate({
+        petNickname: req.body.petNickname
+    });
+
+    if (ownerModelError || petModelError) return res.status(400).send({
+        status: false,
+        message: ownerModelError ? ownerModelError.details[0].message : petModelError.details[0].message
+    });
+    return next();
+}
+
+exports.validatePet = (req, res, next) => {
+    const {error} = petModel.joiPet.fork(['userId', 'petId'], makeRequired).validate({
+        userId: req.body.userId,
+        petId: req.body.petId
+    });
+    if (error) return res.status(400).send({status: false, message: error.details[0].message});
+    return next();
+}
+
+exports.validateUpdateOwnerLocation = (req, res, next) => {
+    const {error} = ownerModel.joiOwner.fork(['userId', 'userLongitude', 'userLatitude'], makeRequired).validate({
+        userId: req.body.userId,
+        userLongitude: req.body.userLongitude,
+        userLatitude: req.body.userLatitude
     });
     if (error) return res.status(400).send({status: false, message: error.details[0].message});
     return next();
@@ -42,17 +61,17 @@ exports.checkValidJWT = (req, res, next) => {
         try {
             let authorization = req.headers['authorization'].split(' ');
             if (authorization[0] !== 'Bearer') {
-                return res.status(401).send({status : false, data: "Unauthorized"});
+                return res.status(401).send({status: false, data: "Unauthorized"});
             } else {
                 req.jwt = jwt.verify(authorization[1], process.env.JWT_SECRET);
                 return next();
             }
 
         } catch (err) {
-            return res.status(401).send({status : false, message: "Unauthorized"});
+            return res.status(401).send({status: false, message: "Unauthorized"});
         }
     } else {
-        return res.status(401).send({status : false, message: "Unauthorized"});
+        return res.status(401).send({status: false, message: "Unauthorized"});
     }
 };
 

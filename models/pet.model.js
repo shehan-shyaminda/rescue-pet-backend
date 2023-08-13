@@ -1,24 +1,25 @@
 const Joi = require('joi');
 
-exports.OwnerSchema = function (mongoose) {
-    const mongooseOwner = new mongoose.Schema({
+exports.PetSchema = function (mongoose) {
+    const mongoosePet = new mongoose.Schema({
+        petId: String,
         userId: String,
-        username: String,
-        password: String,
-        pets: Array,
-        userLongitude: String,
-        userLatitude: Number
+        petDeviceId: String,
+        petNickname: String,
+        petLocationHistory: Array,
+        petLongitude: String,
+        petLatitude: Number
     });
 
-    return  mongoose.model(process.env.MONGOOSE_USERS_COLLECTION, mongooseOwner);
+    return  mongoose.model(process.env.MONGOOSE_PETS_COLLECTION, mongoosePet);
 }
 
-exports.joiOwner = Joi.object({
+exports.joiPet = Joi.object({
+    petId: Joi.string(),
     userId: Joi.string(),
-    username: Joi.string(),
-    password: Joi.string()
-        .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
-    pets: Joi.array(),
-    userLongitude: Joi.number(),
-    userLatitude: Joi.number()
+    petDeviceId: Joi.string(),
+    petNickname: Joi.string(),
+    petLocationHistory: Joi.array(),
+    petLongitude: Joi.number(),
+    petLatitude: Joi.number()
 })

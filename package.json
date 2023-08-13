@@ -1,0 +1,26 @@
+{
+  "name": "rescue_pet_backend",
+  "version": "1.0.0",
+  "description": "Pet Navigation Device: Improving Lost Pet Retrieval",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "P.A.D.S. Shyaminda",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "joi": "^17.9.2",
+    "jsonwebtoken": "^9.0.1",
+    "mongoose": "^7.4.2",
+    "nodemon": "^3.0.1",
+    "uuid": "^9.0.0"
+  },
+  "engines": {
+    "npm": ">=8.0.0 <9.0.0",
+    "node": ">=16.0.0 <17.0.0"
+  }
+}
