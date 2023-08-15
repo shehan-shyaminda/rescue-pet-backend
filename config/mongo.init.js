@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const ownerModel = require('../models/owner.model');
-const petModel = require('../models/pet.model');
 const dotenv = require('dotenv')
 dotenv.config()
 const db = {};

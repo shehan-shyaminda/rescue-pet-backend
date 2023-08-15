@@ -14,8 +14,27 @@ exports.updateSelfLocation = (req, res) => {
         },
         {new: true}).then(r => {
         if (r != null) {
-            console.log(`location updated ${r}`);
-            res.status(200).send({status: true, data: r})
+            const locationHistory = {
+                dateTime: Date.now(),
+                longitude: req.body.petLongitude,
+                latitude: req.body.petLatitude,
+            };
+
+            db.user.findOneAndUpdate({
+                    userId: req.body.userId,
+                    'pets.petId': req.body.petId
+                }, {
+                    $push: {
+                        locationHistory: locationHistory
+                    }
+                }, {new: true}).then(r => {
+                if (r != null) {
+                    console.log(`new pet registered ${r}`);
+                    res.status(200).send({status: true, data: r})
+                } else {
+                    res.status(400).send({status: false, message: 'Update Error'});
+                }
+            })
         } else {
             res.status(400).send({status: false, message: 'Update Error'});
         }
