@@ -11,7 +11,7 @@ exports.checkLogin = (req, res) => {
                 status: true, data:
                     {
                         "user": r[0],
-                        "access_token": jwtToken
+                        "accessToken": jwtToken
                     }
             })
         } else {
