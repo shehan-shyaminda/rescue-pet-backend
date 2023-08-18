@@ -26,6 +26,7 @@ exports.saveNewUser = (req, res) => {
         userId: uuidv4(),
         username: req.body.username,
         password: req.body.password,
+        pets: [],
         userLongitude: req.body.userLongitude,
         userLatitude: req.body.userLatitude
     });
@@ -47,6 +48,9 @@ exports.saveNewPet = (req, res) => {
         userId: req.body.userId,
         petDeviceId: "pet_" + petId,
         petNickname: req.body.petNickname,
+        petType: req.body.petType,
+        petLatitude: "",
+        petLongitude: ""
     };
 
     db.user.findOneAndUpdate({userId: req.body.userId}, {

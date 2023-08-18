@@ -14,9 +14,11 @@ exports.validateLogin = (req, res, next) => {
 }
 
 exports.validateNewUser = (req, res, next) => {
-    const {error} = ownerModel.joiOwner.fork(['username', 'password'], makeRequired).validate({
+    const {error} = ownerModel.joiOwner.fork(['username', 'password', 'userLongitude', 'userLatitude'], makeRequired).validate({
         username: req.body.username,
-        password: req.body.password
+        password: req.body.password,
+        userLongitude: req.body.userLongitude,
+        userLatitude: req.body.userLatitude
     });
     if (error) return res.status(400).send({status: false, message: error.details[0].message});
     return next();
@@ -26,8 +28,10 @@ exports.validateAddPet = (req, res, next) => {
     const {error: ownerModelError} = ownerModel.joiOwner.fork(['userId'], makeRequired).validate({
         userId: req.body.userId
     });
-    const {error: petModelError} = petModel.joiPet.fork(['petNickname'], makeRequired).validate({
-        petNickname: req.body.petNickname
+    const {error: petModelError} = petModel.joiPet.fork(['petNickname','petType','petBread'], makeRequired).validate({
+        petNickname: req.body.petNickname,
+        petType: req.body.petType,
+        petBread: req.body.petBread
     });
 
     if (ownerModelError || petModelError) return res.status(400).send({

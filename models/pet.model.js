@@ -8,7 +8,9 @@ exports.PetSchema = function (mongoose) {
         petNickname: String,
         petLocationHistory: Array,
         petLongitude: String,
-        petLatitude: Number
+        petLatitude: Number,
+        petType: String,
+        petBread: String
     });
 
     return  mongoose.model(process.env.MONGOOSE_PETS_COLLECTION, mongoosePet);
@@ -21,5 +23,7 @@ exports.joiPet = Joi.object({
     petNickname: Joi.string(),
     petLocationHistory: Joi.array(),
     petLongitude: Joi.number(),
-    petLatitude: Joi.number()
+    petLatitude: Joi.number(),
+    petType: Joi.string(),
+    petBread: Joi.string()
 })
