@@ -22,5 +22,14 @@
   "engines": {
     "npm": ">=8.0.0 <9.0.0",
     "node": ">=16.0.0 <17.0.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shehan-shyaminda/rescue-pet-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shehan-shyaminda/rescue-pet-backend/issues"
+  },
+  "homepage": "https://github.com/shehan-shyaminda/rescue-pet-backend#readme"
 }
