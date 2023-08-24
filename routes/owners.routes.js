@@ -30,4 +30,9 @@ exports.routesConfig = function(app) {
         OwnerMiddleware.validateUpdateOwnerLocation,
         OwnerController.updateSelfLocation
     ]);
+
+    app.get('/owner/getMySelf', [
+        OwnerMiddleware.checkValidJWT,
+        OwnerController.getMySelf
+    ])
 };

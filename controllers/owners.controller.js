@@ -93,3 +93,25 @@ exports.updateSelfLocation = (req, res) => {
         }
     })
 }
+
+exports.getMySelf = (req, res) => {
+    let username = "";
+    try {
+        let authorization = req.headers['authorization'].split(' ');
+        const decodedToken = jwt.verify(authorization[1], process.env.JWT_SECRET);
+        username = decodedToken.username
+
+        db.user.find({username: username}).exec().then(r => {
+            if (r.length !== 0) {
+                res.status(200).send({status: true, data: r[0]})
+            } else {
+                console.log(`no user found`);
+                res.status(401).send({status: false, message: 'Please Check Your Credentials'})
+            }
+        })
+
+    } catch (error) {
+        res.status(400).send({status: false, message: 'Token verification error'});
+    }
+}
+
