@@ -1,117 +1,113 @@
 const db = require("../config/mongo.init");
-const {v4: uuidv4} = require('uuid');
+const commonUtils = require("../utilities/common.utils");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
 
-exports.checkLogin = (req, res) => {
-    const jwtToken = jwt.sign(req.body, process.env.JWT_SECRET)
-    db.user.find({username: req.body.username, password: req.body.password}).exec().then(r => {
-        if (r.length !== 0) {
-            res.status(200).send({
-                status: true, data:
-                    {
-                        "user": r[0],
-                        "accessToken": jwtToken
-                    }
+exports.userLogin = (req, res) => {
+    db.user.findOne({username: req.body.username}).exec()
+        .then(r => {
+            if (!r) {
+                return res.status(400).json({status: false, message: 'Invalid credentials'});
+            }
+            if (req.body.userPassword !== r.userPassword) {
+                return res.status(400).json({status: false, message: 'Invalid credentials'});
+            }
+            const payload = {
+                userId: r._id, username: r.username
+            };
+            const jwtToken = jwt.sign(payload, process.env.JWT_TOKEN_SECRET)
+            return res.status(200).send({
+                status: true, data: {
+                    "user": r, "access_token": jwtToken
+                }
             })
-        } else {
-            console.log(`no user found`);
-            res.status(401).send({status: false, message: 'Please Check Your Credentials'})
-        }
-    })
+        })
+        .catch(error => {
+            res.status(500).send({status: false, message: 'Error Encountered'});
+        });
 }
 
-exports.saveNewUser = (req, res) => {
+exports.userRegister = (req, res) => {
     const user = new db.user({
-        userId: uuidv4(),
         username: req.body.username,
-        password: req.body.password,
-        pets: [],
+        password: req.body.userPassword,
         userLongitude: req.body.userLongitude,
         userLatitude: req.body.userLatitude
     });
     user.save().then(r => {
         if (r.length !== 0) {
-            console.log(`new user registered ${r}`);
             res.status(200).send({status: true, data: user})
         } else {
-            console.log(`registration error`);
-            res.status(400).send({status: false, message: 'Registration Error'});
-        }
-    });
-}
-
-exports.saveNewPet = (req, res) => {
-    const petId = crypto.randomBytes(4).toString("hex");
-    const pet = {
-        petId: petId,
-        userId: req.body.userId,
-        petDeviceId: "pet_" + petId,
-        petNickname: req.body.petNickname,
-        petType: req.body.petType,
-        petLatitude: "",
-        petLongitude: ""
-    };
-
-    db.user.findOneAndUpdate({userId: req.body.userId}, {
-        $push: {
-            pets: pet
-        }
-    }, {new: true}).then(r => {
-        if (r != null) {
-            console.log(`new pet registered ${r}`);
-            res.status(200).send({status: true, data: pet})
-        } else {
-            res.status(400).send({status: false, message: 'Update Error'});
+            res.status(400).send({status: false, message: 'Error Encountered'});
         }
     })
+        .catch(error => {
+            res.status(500).send({status: false, message: 'Error Encountered'});
+        });
 }
 
 exports.getMyPet = (req, res) => {
-    db.user.findOne({userId: req.body.userId}, {pets: {$elemMatch: {petId: req.body.petId}}}).exec().then(r => {
+    db.user.findOne({_id: req.body.userId}).exec().then(r => {
         if (r) {
-            res.status(200).send({status: true, data: r})
-        } else {
-            console.log(`no user found`);
-            res.status(401).send({status: false, message: 'Please Check Your Credentials'})
-        }
-    })
-}
-
-exports.updateSelfLocation = (req, res) => {
-    db.user.findOneAndUpdate({userId: req.body.userId}, {
-        $set: {
-            userLongitude: req.body.userLongitude,
-            userLatitude: req.body.userLatitude
-        }
-    }, {new: true}).then(r => {
-        if (r != null) {
-            console.log(`user updated ${r}`);
-            res.status(200).send({status: true, data: r})
-        } else {
-            res.status(400).send({status: false, message: 'Update Error'});
-        }
-    })
-}
-
-exports.getMySelf = (req, res) => {
-    let username = "";
-    try {
-        let authorization = req.headers['authorization'].split(' ');
-        const decodedToken = jwt.verify(authorization[1], process.env.JWT_SECRET);
-        username = decodedToken.username
-
-        db.user.find({username: username}).exec().then(r => {
-            if (r.length !== 0) {
-                res.status(200).send({status: true, data: r[0]})
+            if (req.query.petsId) {
+                const pet = r.userPets.find(pet => pet.petsId === req.query.petsId);
+                if (pet) {
+                    res.status(200).send({status: true, data: pet})
+                } else {
+                    res.status(400).send({status: false, message: 'Error Encountered'});
+                }
             } else {
-                console.log(`no user found`);
-                res.status(401).send({status: false, message: 'Please Check Your Credentials'})
+                res.status(200).send({status: true, data: r.userPets})
+            }
+        } else {
+            res.status(400).send({status: false, message: 'Error Encountered'});
+        }
+    })
+        .catch(error => {
+            res.status(500).send({status: false, message: 'Error Encountered'});
+        });
+}
+
+exports.updateSelfLocation = async (req, res) => {
+    const user = await commonUtils.extractToken(req.headers['authorization'].split(' '));
+    db.user.findOneAndUpdate({_id: user._id}, {
+        $set: {
+            userLongitude: req.body.userLongitude, userLatitude: req.body.userLatitude
+        }
+    }, {new: true})
+        .then(r => {
+            if (r != null) {
+                res.status(200).send({status: true, data: r})
+            } else {
+                res.status(400).send({status: false, message: 'Error Encountered'});
             }
         })
+        .catch(error => {
+            res.status(500).send({status: false, message: 'Error Encountered'});
+        });
+}
 
-    } catch (error) {
-        res.status(400).send({status: false, message: 'Token verification error'});
+exports.getMySelf = async (req, res) => {
+    const user = await commonUtils.extractToken(req.headers['authorization'].split(' '));
+    if (user) {
+        res.status(200).send({status: true, data: user})
+    } else {
+        res.status(400).send({status: false, message: 'Error Encountered'});
     }
 }
 
+exports.addPet = async (req, res) => {
+    const newPet = {
+        petsNickname: req.body.petNickname, petsId: req.body.petId
+    };
+    db.user.findOneAndUpdate({_id: req.body.userId}, {$push: {userPets: newPet}}, {new: true})
+        .then(updatedUser => {
+            if (updatedUser) {
+                res.status(200).send({status: true, data: updatedUser});
+            } else {
+                res.status(400).send({status: false, message: 'Error Encountered'});
+            }
+        })
+        .catch(error => {
+            res.status(500).send({status: false, message: 'Error Encountered'});
+        });
+}

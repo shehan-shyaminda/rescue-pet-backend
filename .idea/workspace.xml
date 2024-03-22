@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_INJECTED_CODE" value="false" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="373257bc-ffd4-4139-ae4b-9f7b48765a27" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utilities/common.utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/mongo.init.js" beforeDir="false" afterPath="$PROJECT_DIR$/config/mongo.init.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/owners.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/owners.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/pets.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/pets.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/owners.middleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/owners.middleware.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/middleware/pets.middleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/middleware/pets.middleware.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/owner.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/owner.model.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/pet.model.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/pet.model.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/owners.routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/owners.routes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/pets.routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/pets.routes.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/models/pet.model.js" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2c2u9syiR5LaYAmMqI6P2dfrDjn" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/code-labs/Documents/Personal/Projects/rescue-pet-backend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="373257bc-ffd4-4139-ae4b-9f7b48765a27" name="Changes" comment="" />
+      <created>1707321847082</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1707321847082</updated>
+      <workItem from="1707321848069" duration="14309000" />
+      <workItem from="1708576123485" duration="9746000" />
+      <workItem from="1710077544946" duration="42430000" />
+      <workItem from="1710837321610" duration="1044000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

@@ -2,10 +2,12 @@ const Joi = require('joi');
 
 exports.OwnerSchema = function (mongoose) {
     const mongooseOwner = new mongoose.Schema({
-        userId: String,
         username: String,
-        password: String,
-        pets: Array,
+        userPassword: String,
+        userPets: [{
+            petsId: String,
+            petsNickname: String
+        }],
         userLongitude: Number,
         userLatitude: Number
     });
@@ -14,11 +16,13 @@ exports.OwnerSchema = function (mongoose) {
 }
 
 exports.joiOwner = Joi.object({
-    userId: Joi.string(),
     username: Joi.string(),
-    password: Joi.string()
+    userPassword: Joi.string()
         .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
-    pets: Joi.array(),
+    userPets:  [{
+        petsId: Joi.string(),
+        petsNickname: Joi.string()
+    }],
     userLongitude: Joi.number(),
     userLatitude: Joi.number()
 })
