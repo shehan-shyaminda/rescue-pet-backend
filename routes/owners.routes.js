@@ -29,4 +29,10 @@ exports.routesConfig = function(app) {
         OwnerMiddleware.checkValidJWT,
         OwnerController.getMySelf
     ])
+
+    app.post('/owner/registerFCM', [
+        OwnerMiddleware.checkValidJWT,
+        OwnerMiddleware.registerFCM,
+        OwnerController.registerFCM
+    ])
 };

@@ -12,7 +12,7 @@ exports.routesConfig = function (app) {
         OwnerController.addPet
     ]);
 
-    app.get('/pet/getPet', [
+    app.post('/pet/getPet', [
         OwnerMiddleware.checkValidJWT,
         PetMiddleware.getPet,
         PetController.getPet
@@ -28,4 +28,8 @@ exports.routesConfig = function (app) {
         OwnerMiddleware.checkValidJWT,
         PetController.getDirection
     ]);
+
+    app.post('/pet/sendNotification',[
+        PetController.sendPush
+    ])
 };

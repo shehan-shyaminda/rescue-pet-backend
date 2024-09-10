@@ -6,7 +6,8 @@ exports.OwnerSchema = function (mongoose) {
         userPassword: String,
         userPets: [{
             petsId: String,
-            petsNickname: String
+            petsNickname: String,
+            petsType: String
         }],
         userLongitude: Number,
         userLatitude: Number
@@ -17,11 +18,11 @@ exports.OwnerSchema = function (mongoose) {
 
 exports.joiOwner = Joi.object({
     username: Joi.string(),
-    userPassword: Joi.string()
-        .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')),
+    userPassword: Joi.string(),
     userPets:  [{
         petsId: Joi.string(),
-        petsNickname: Joi.string()
+        petsNickname: Joi.string(),
+        petsType: Joi.string()
     }],
     userLongitude: Joi.number(),
     userLatitude: Joi.number()

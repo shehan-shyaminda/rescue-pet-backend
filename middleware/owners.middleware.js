@@ -1,4 +1,5 @@
 const ownerModel = require("../models/owner.model");
+const fcmTokensModel = require("../models/fcm.tokens.model");
 const petModel = require("../models/pet.model");
 const jwt = require("jsonwebtoken");
 const db = require("../config/mongo.init");
@@ -58,6 +59,15 @@ exports.updateSelfLocation = (req, res, next) => {
     const { error } = ownerModel.joiOwner.fork(['userLongitude', 'userLatitude'], makeRequired).validate({
         userLongitude: req.body.userLongitude,
         userLatitude: req.body.userLatitude
+    });
+    if (error) return res.status(400).send({ status: false, message: error.details[0].message });
+    return next();
+}
+
+exports.registerFCM = (req, res, next) => {
+    const { error } = fcmTokensModel.joiFcmTokens.validate({
+        userId: req.body.userId,
+        token: req.body.fcmToken
     });
     if (error) return res.status(400).send({ status: false, message: error.details[0].message });
     return next();

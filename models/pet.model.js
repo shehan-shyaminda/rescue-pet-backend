@@ -1,3 +1,4 @@
+const { timeStamp } = require('@google/maps/lib/internal/convert');
 const Joi = require('joi');
 
 exports.PetSchema = function (mongoose) {
@@ -6,7 +7,8 @@ exports.PetSchema = function (mongoose) {
         petNickname: String,
         petLocationHistory: [{
             petLongitude: String,
-            petLatitude: String
+            petLatitude: String,
+            timeStamp: String
         }],
         petType: String,
         petBread: String
@@ -20,7 +22,8 @@ exports.joiPet = Joi.object({
     petNickname: Joi.string(),
     petLocationHistory: [{
         petLongitude: Joi.string(),
-        petLatitude: Joi.string()
+        petLatitude: Joi.string(),
+        timeStamp: Joi.string()
     }],
     petType: Joi.string(),
     petBread: Joi.string()

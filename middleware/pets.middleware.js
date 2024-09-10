@@ -4,12 +4,21 @@ const db = require("../config/mongo.init");
 const makeRequired = (x) => x.required();
 
 exports.addPet = (req, res, next) => {
-    const {error} = petModel.joiPet.fork(['petNickname','petType','petBread'], makeRequired).validate({
+    console.log(req.body);
+    
+    const {error} = petModel.joiPet.fork(['userId','petNickname','petType','petBread'], makeRequired).validate({
+        userId: req.body.userId,
         petNickname: req.body.petNickname,
         petType: req.body.petType,
         petBread: req.body.petBread
     });
-    if (error) return res.status(400).send({status: false, message: error.details[0].message});
+    if (error) return res.status(404).send({status: false, message: error.details[0].message});
+    const location = req.body.petLocationHistory
+    if (location) {
+        if (!location.petLongitude || !location.petLatitude) {
+            return res.status(405).send({ status: false, message: 'petLongitude and petLatitude are required in each location.' });
+        }
+    }
     return next();
 }
 
@@ -30,10 +39,6 @@ exports.updatePetLocation = (req, res, next) => {
     }
     return next();
 }
-
-
-
-
 
 exports.validateUpdateLocation = (req, res, next) => {
     const { error } = petModel.joiPet.fork(['userId', 'petId', 'petLongitude', 'petLatitude'], makeRequired).validate({
