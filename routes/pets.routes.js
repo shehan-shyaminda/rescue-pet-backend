@@ -30,6 +30,7 @@ exports.routesConfig = function (app) {
     ]);
 
     app.post('/pet/sendNotification',[
+        PetMiddleware.sendPush,
         PetController.sendPush
     ])
 };

@@ -28,14 +28,8 @@ function fetchFromFirebase(userId, callback) {
     });
 }
 
-const pushMessage = (tokens, message) => {
-    return firebasePush.sendEach({
-        notification: {
-            title: message.title,
-            body: message.body
-        },
-        tokens: tokens
-    });
+const pushMessage = (message) => {
+    return firebasePush.send(message)
 };
 
 module.exports = { extractToken, pushToFirebase, fetchFromFirebase, pushMessage };

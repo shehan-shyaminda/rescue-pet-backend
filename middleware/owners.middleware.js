@@ -64,9 +64,8 @@ exports.updateSelfLocation = (req, res, next) => {
     return next();
 }
 
-exports.registerFCM = (req, res, next) => {
-    const { error } = fcmTokensModel.joiFcmTokens.validate({
-        userId: req.body.userId,
+exports.renewTokenFCM = (req, res, next) => {
+    const { error } = fcmTokensModel.joiFcmTokens.fork(['token'], makeRequired).validate({
         token: req.body.fcmToken
     });
     if (error) return res.status(400).send({ status: false, message: error.details[0].message });

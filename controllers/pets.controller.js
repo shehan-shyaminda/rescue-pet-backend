@@ -77,32 +77,37 @@ exports.updatePetLocation = (req, res) => {
         });
 };
 
-exports.sendPush = (req, res) => {
-    commonUtils.pushMessage(["ABCS"],
-        {
-            title: "Santha",
-            message: "Santha Hodin"
+exports.sendPush = async (req, res) => {
+    db.fcmTokens.findOne({_id: req.query.userId}).exec().then(r => {
+        if (r) {
+            const message = {
+                token: r.token,
+                notification: {
+                  title: 'Hello!',
+                  body: 'This is a push notification from Node.js'
+                },
+                data: {
+                  key1: 'petId',
+                  key2: '123456'
+                }
+              };
+            console.log(message);
+            commonUtils.pushMessage(message).then((response) => {
+              console.log('Successfully sent message:', response);
+              return res.status(200).json({
+                  success: true,
+                  data: "Notification Success"
+                });
+            }).catch((error) => {
+              console.log('Error sending message:', error);
+              res.status(403).send({status: false, message: `Error sending message: "${error}"`});
+            });
+        } else {
+            res.status(400).send({status: false, message: 'Error Encountered'});
         }
-    ).then(response => {
-        const successCount = response.successCount;
-        const failureCount = response.failureCount;
-        const failedTokens = response.responses
-            .filter((resp, idx) => !resp.success)
-            .map((resp, idx) => tokens[idx]);
-
-        console.log(`Notifications sent: ${successCount} successful, ${failureCount} failed`);
-        
-        return res.status(200).json({
-            success: true,
-            data: {
-                message: `Notifications sent: ${successCount} successful, ${failureCount} failed`,
-                failedTokens: failedTokens
-            }
-        });
     })
     .catch(error => {
-        console.log(`Error sending message:' ${error}`);
-        res.status(403).send({status: false, message: `Error sending message: "${error}"`});
+        res.status(500).send({status: false, message: 'Error Encountered'});
     });
 };
 

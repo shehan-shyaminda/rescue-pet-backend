@@ -116,14 +116,15 @@ exports.addPet = async (req, res) => {
         });
 }
 
-exports.registerFCM = async (req, res) => {
+exports.renewTokenFCM = async (req, res) => {
+    const user = await commonUtils.extractToken(req.headers['authorization'].split(' '));
     const newToken = {
-        userId: req.body.userId,
+        userId: user._id,
         token: req.body.fcmToken,
         createdAt: Date.now()
     };
     db.fcmTokens.findOneAndUpdate(
-        { _id: req.body.userId },
+        { _id: user._id },
         {
             $set: { token: newToken.token, createdAt: newToken.createdAt }
         },
@@ -133,7 +134,7 @@ exports.registerFCM = async (req, res) => {
         })
         .then(it => {
             if (it) {
-                res.status(200).send({ status: true, data: it });
+                res.status(200).send({ status: true, data: "Token Renew Success" });
             } else {
                 res.status(400).send({ status: false, message: 'Error Encountered' });
             }
@@ -142,3 +143,18 @@ exports.registerFCM = async (req, res) => {
             res.status(500).send({ status: false, message: 'Error Encountered' });
         });
 }
+
+exports.revokeTokenFCM = exports.registerFCM = async (req, res) => {
+    try {
+        const user = await commonUtils.extractToken(req.headers['authorization'].split(' '));
+        const result = await db.fcmTokens.deleteOne({ _id: user._id });
+        
+        if (result.deletedCount > 0) {
+            res.status(200).send({ status: true, message: 'Token Revoke Success' });
+        } else {
+            res.status(404).send({ status: false, message: 'Token not found' });
+        }
+    } catch (error) {
+        res.status(500).send({ status: false, message: 'Internal server error' });
+    }
+};

@@ -29,6 +29,13 @@ exports.getPet = (req, res, next) => {
     return next();
 }
 
+exports.sendPush = (req, res, next) => {
+    if (!req.query.userId) {
+        return res.status(400).send({ status: false, message: 'userId is required' });
+    }
+    return next();
+}
+
 exports.updatePetLocation = (req, res, next) => {
     if (!req.body.petId) {
         return res.status(400).send({ status: false, message: 'petId is required' });

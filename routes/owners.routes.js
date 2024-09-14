@@ -30,9 +30,14 @@ exports.routesConfig = function(app) {
         OwnerController.getMySelf
     ])
 
-    app.post('/owner/registerFCM', [
+    app.post('/owner/renewTokenFCM', [
         OwnerMiddleware.checkValidJWT,
-        OwnerMiddleware.registerFCM,
-        OwnerController.registerFCM
+        OwnerMiddleware.renewTokenFCM,
+        OwnerController.renewTokenFCM
+    ])
+
+    app.post('/owner/revokeTokenFCM', [
+        OwnerMiddleware.checkValidJWT,
+        OwnerController.revokeTokenFCM
     ])
 };
