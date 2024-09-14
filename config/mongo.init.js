@@ -13,7 +13,7 @@ const connectDatabase = async() => {
 connectDatabase().then(connection => {
     db.user = ownerModel.OwnerSchema(connection)
     db.pet = petModel.PetSchema(connection)
-    db.fcmTokens = fcmTokensModel.fcmTokensSchema(connection)
+    db.fcmTokens = fcmTokensModel.FcmTokensSchema(connection)
 })
 
 module.exports = db;

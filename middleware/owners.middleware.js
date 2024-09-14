@@ -1,6 +1,5 @@
 const ownerModel = require("../models/owner.model");
 const fcmTokensModel = require("../models/fcm.tokens.model");
-const petModel = require("../models/pet.model");
 const jwt = require("jsonwebtoken");
 const db = require("../config/mongo.init");
 const makeRequired = (x) => x.required();
