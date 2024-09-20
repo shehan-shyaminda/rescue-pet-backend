@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const accessSecret = require('../utilities/google.cloud.secret.json');
+const accessSecret = require('/etc/secrets/google.cloud.secret.json');
 
 async function initializeFirebase() {
   try {
