@@ -2,14 +2,14 @@ const { initializeApp } = require('firebase/app');
 const { getDatabase } = require('firebase/database');
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC-J3gVF1gL77j-okoeS_rW9D_D7V5_QSs",
-  authDomain: "rescue-pet-navigation.firebaseapp.com",
-  databaseURL: "https://rescue-pet-navigation-default-rtdb.firebaseio.com",
-  projectId: "rescue-pet-navigation",
-  storageBucket: "rescue-pet-navigation.appspot.com",
-  messagingSenderId: "1084289306169",
-  appId: "1:1084289306169:web:49f7c1a9fc36141f7b47e8",
-  measurementId: "G-XTWV4RMTBY"
+  apiKey: process.env.GOOGLE_MAPS_API_KEY,
+  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.FIREBASE_DATABASE_URL,
+  projectId: process.env.FIREBASE_CONSOLE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET_ID,
+  messagingSenderId: process.env.FIREBASE_CONSOLE_ID,
+  appId: process.env.FIREBASE_APP_ID,
+  measurementId: process.env.FIREBASE_MEASUREMENT_ID
 };
 
 const firebase = initializeApp(firebaseConfig);

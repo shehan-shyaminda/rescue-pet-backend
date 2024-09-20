@@ -28,8 +28,17 @@ function fetchFromFirebase(userId, callback) {
     });
 }
 
-const pushMessage = (message) => {
-    return firebasePush.send(message)
-};
+const pushMessage = async (token, payload) => {
+    try {
+      const messaging = await firebasePush;
+      const response = await messaging.send(token, payload);
+      console.log('Successfully sent message:', response);
+      return response;
+    } catch (error) {
+      console.error('Error sending message:', error);
+      throw error;
+    }
+  };
+  
 
 module.exports = { extractToken, pushToFirebase, fetchFromFirebase, pushMessage };

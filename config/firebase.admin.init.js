@@ -1,18 +1,22 @@
-const admin = require("firebase-admin");
-const serviceAccount = require("../assets/rescue-pet-navigation-firebase-adminsdk-cv346-4e2b3fb122.json");
+const admin = require('firebase-admin');
+const accessSecret = require('../utilities/google.cloud.secret.json');
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://rescue-pet-navigation-default-rtdb.firebaseio.com"
-});
+async function initializeFirebase() {
+  try {
+    admin.initializeApp({
+      credential: admin.credential.cert(accessSecret),
+      databaseURL: process.env.FIREBASE_DATABASE_URL // Ensure the environment variable is set properly
+    });
 
-admin.credential
-  .cert(serviceAccount)
-  .getAccessToken()
-  .then((token) => {
-    console.log('Access Token:', token.access_token);
-  });
-  
-const firebasePush = admin.messaging();
+    console.log('Firebase initialized successfully.');
+    return admin.messaging(); // Return the Firebase messaging instance
+  } catch (error) {
+    console.error('Error initializing Firebase:', error);
+    throw error;
+  }
+}
 
-module.exports = firebasePush;
+// Export the Firebase Messaging instance once initialized
+const firebasePush = initializeFirebase();
+
+module.exports = firebasePush

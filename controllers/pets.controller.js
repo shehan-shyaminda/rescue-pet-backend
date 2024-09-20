@@ -91,7 +91,6 @@ exports.sendPush = async (req, res) => {
                   key2: '123456'
                 }
               };
-            console.log(message);
             commonUtils.pushMessage(message).then((response) => {
               console.log('Successfully sent message:', response);
               return res.status(200).json({
