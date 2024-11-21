@@ -41,6 +41,7 @@ exports.addPet = async (req, res, next) => {
 }
 
 exports.getPet = (req, res) => {
+    console.log(req.body.petId)
     db.pet.findOne({_id: req.body.petId}).exec().then(r => {
         if (r) {
             console.log(r);        
@@ -83,12 +84,11 @@ exports.sendPush = async (req, res) => {
             const message = {
                 token: r.token,
                 notification: {
-                  title: 'Hello!',
-                  body: 'This is a push notification from Node.js'
+                  title: '🐾 Pet Safety Alert',
+                  body: '🚨 Oops! Your furry friend just left the safe zone. 🐕📍 Check their location now to keep them safe!'
                 },
                 data: {
-                  key1: 'petId',
-                  key2: '123456'
+                    petId: '66d340af8caade86ee4825c7'
                 }
               };
             commonUtils.pushMessage(message).then((response) => {
